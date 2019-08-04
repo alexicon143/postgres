@@ -1,0 +1,402 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.17
+-- Dumped by pg_dump version 9.5.17
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: Web
+--
+
+CREATE TABLE public.ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.ar_internal_metadata OWNER TO "Web";
+
+--
+-- Name: games; Type: TABLE; Schema: public; Owner: Web
+--
+
+CREATE TABLE public.games (
+    id bigint NOT NULL,
+    server_id character varying NOT NULL,
+    friendly_name character varying,
+    service_name character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    notes character varying
+);
+
+
+ALTER TABLE public.games OWNER TO "Web";
+
+--
+-- Name: games_id_seq; Type: SEQUENCE; Schema: public; Owner: Web
+--
+
+CREATE SEQUENCE public.games_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.games_id_seq OWNER TO "Web";
+
+--
+-- Name: games_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Web
+--
+
+ALTER SEQUENCE public.games_id_seq OWNED BY public.games.id;
+
+
+--
+-- Name: scheduled_stops; Type: TABLE; Schema: public; Owner: Web
+--
+
+CREATE TABLE public.scheduled_stops (
+    id bigint NOT NULL,
+    game_id character varying NOT NULL,
+    shutdown_time timestamp without time zone NOT NULL,
+    warning_sent_at timestamp without time zone,
+    completed_at timestamp without time zone,
+    canceled_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.scheduled_stops OWNER TO "Web";
+
+--
+-- Name: scheduled_stops_id_seq; Type: SEQUENCE; Schema: public; Owner: Web
+--
+
+CREATE SEQUENCE public.scheduled_stops_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.scheduled_stops_id_seq OWNER TO "Web";
+
+--
+-- Name: scheduled_stops_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Web
+--
+
+ALTER SEQUENCE public.scheduled_stops_id_seq OWNED BY public.scheduled_stops.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: Web
+--
+
+CREATE TABLE public.schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO "Web";
+
+--
+-- Name: servers; Type: TABLE; Schema: public; Owner: Web
+--
+
+CREATE TABLE public.servers (
+    id bigint NOT NULL,
+    friendly_name character varying,
+    ip character varying(15) NOT NULL,
+    username character varying NOT NULL,
+    keyfile text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.servers OWNER TO "Web";
+
+--
+-- Name: servers_id_seq; Type: SEQUENCE; Schema: public; Owner: Web
+--
+
+CREATE SEQUENCE public.servers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.servers_id_seq OWNER TO "Web";
+
+--
+-- Name: servers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Web
+--
+
+ALTER SEQUENCE public.servers_id_seq OWNED BY public.servers.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.games ALTER COLUMN id SET DEFAULT nextval('public.games_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.scheduled_stops ALTER COLUMN id SET DEFAULT nextval('public.scheduled_stops_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.servers ALTER COLUMN id SET DEFAULT nextval('public.servers_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: Web
+--
+
+COPY public.ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	production	2018-06-25 20:12:26.499655	2018-06-25 20:12:26.499655
+\.
+
+
+--
+-- Data for Name: games; Type: TABLE DATA; Schema: public; Owner: Web
+--
+
+COPY public.games (id, server_id, friendly_name, service_name, created_at, updated_at, notes) FROM stdin;
+1	1	ARK - Aberration	ARKGaidenAberration	2019-01-27 08:32:55.236704	2019-02-22 09:47:08.428678	connect to luricidex.com:27010
+2	1	ARK - Center	ARKGaidenCenter	2019-02-22 08:37:30.80863	2019-02-22 09:47:38.648431	connect to luricidex.com:27011
+3	1	ARK - Island	ARKGaidenIsland	2019-02-22 09:48:59.942542	2019-02-22 09:48:59.942542	connect to luricidex.com:27012
+4	1	ARK - Ragnarok	ARKGaidenRagnarok	2019-02-22 09:49:40.760679	2019-02-22 09:49:40.760679	connect to luricidex.com:27013
+5	1	ARK - Scorched Earth	ARKGaidenScorch	2019-02-22 09:50:21.700139	2019-02-22 09:50:21.700139	connect to luricidex.com:27014
+6	2	ARK - Aberration	ARKMerakiAberration	2019-02-22 09:51:44.041381	2019-02-22 09:51:44.041381	connect to luricidex.com:27015
+7	2	ARK - Center	ARKMerakiCenter	2019-02-22 09:52:18.730543	2019-02-22 09:52:18.730543	connect to luricidex.com:27016
+8	2	ARK - Island	ARKMerakiIsland	2019-02-22 09:52:44.971465	2019-02-22 09:52:44.971465	connect to luricidex.com:27017
+9	2	ARK - Ragnarok	ARKMerakiRagnarok	2019-02-22 09:53:06.881648	2019-02-22 09:53:06.881648	connect to luricidex.com:27018
+10	2	ARK - Scorched Earth	ARKMerakiScorch	2019-02-22 09:53:28.271554	2019-02-22 09:53:28.271554	connect to luricidex.com:27019
+11	3	ARKVanillaScorch	ARKVanillaScorch	2019-04-19 00:03:56.683754	2019-07-06 20:56:39.127608	connect to luricidex.com:27024
+\.
+
+
+--
+-- Name: games_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Web
+--
+
+SELECT pg_catalog.setval('public.games_id_seq', 12, true);
+
+
+--
+-- Data for Name: scheduled_stops; Type: TABLE DATA; Schema: public; Owner: Web
+--
+
+COPY public.scheduled_stops (id, game_id, shutdown_time, warning_sent_at, completed_at, canceled_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: scheduled_stops_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Web
+--
+
+SELECT pg_catalog.setval('public.scheduled_stops_id_seq', 1, false);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: Web
+--
+
+COPY public.schema_migrations (version) FROM stdin;
+20180626001740
+20180626004837
+20180626005414
+20180626013550
+20190222090045
+\.
+
+
+--
+-- Data for Name: servers; Type: TABLE DATA; Schema: public; Owner: Web
+--
+
+COPY public.servers (id, friendly_name, ip, username, keyfile, created_at, updated_at) FROM stdin;
+1	Gaiden	Games	alexicon	/home/Web/.ssh/id_rsa	2019-04-18 23:22:28	2019-07-06 12:10:11.431607
+2	Meraki	Games	alexicon	/home/Web/.ssh/id_rsa	2019-02-22 09:51:08.164337	2019-07-06 12:10:18.608952
+3	Vanilla	Games	alexicon	/home/Web/.ssh/id_rsa	2019-04-18 23:22:28.101246	2019-07-06 12:10:22.524934
+\.
+
+
+--
+-- Name: servers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Web
+--
+
+SELECT pg_catalog.setval('public.servers_id_seq', 4, true);
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: games_pkey; Type: CONSTRAINT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scheduled_stops_pkey; Type: CONSTRAINT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.scheduled_stops
+    ADD CONSTRAINT scheduled_stops_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: servers_pkey; Type: CONSTRAINT; Schema: public; Owner: Web
+--
+
+ALTER TABLE ONLY public.servers
+    ADD CONSTRAINT servers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_games_on_server_id; Type: INDEX; Schema: public; Owner: Web
+--
+
+CREATE INDEX index_games_on_server_id ON public.games USING btree (server_id);
+
+
+--
+-- Name: index_scheduled_stops_on_game_id; Type: INDEX; Schema: public; Owner: Web
+--
+
+CREATE INDEX index_scheduled_stops_on_game_id ON public.scheduled_stops USING btree (game_id);
+
+
+--
+-- Name: index_scheduled_stops_on_warning_sent_at; Type: INDEX; Schema: public; Owner: Web
+--
+
+CREATE INDEX index_scheduled_stops_on_warning_sent_at ON public.scheduled_stops USING btree (warning_sent_at);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: TABLE ar_internal_metadata; Type: ACL; Schema: public; Owner: Web
+--
+
+REVOKE ALL ON TABLE public.ar_internal_metadata FROM PUBLIC;
+REVOKE ALL ON TABLE public.ar_internal_metadata FROM "Web";
+GRANT ALL ON TABLE public.ar_internal_metadata TO "Web";
+GRANT ALL ON TABLE public.ar_internal_metadata TO luricidex;
+
+
+--
+-- Name: TABLE games; Type: ACL; Schema: public; Owner: Web
+--
+
+REVOKE ALL ON TABLE public.games FROM PUBLIC;
+REVOKE ALL ON TABLE public.games FROM "Web";
+GRANT ALL ON TABLE public.games TO "Web";
+GRANT ALL ON TABLE public.games TO luricidex;
+
+
+--
+-- Name: TABLE scheduled_stops; Type: ACL; Schema: public; Owner: Web
+--
+
+REVOKE ALL ON TABLE public.scheduled_stops FROM PUBLIC;
+REVOKE ALL ON TABLE public.scheduled_stops FROM "Web";
+GRANT ALL ON TABLE public.scheduled_stops TO "Web";
+GRANT ALL ON TABLE public.scheduled_stops TO luricidex;
+
+
+--
+-- Name: TABLE schema_migrations; Type: ACL; Schema: public; Owner: Web
+--
+
+REVOKE ALL ON TABLE public.schema_migrations FROM PUBLIC;
+REVOKE ALL ON TABLE public.schema_migrations FROM "Web";
+GRANT ALL ON TABLE public.schema_migrations TO "Web";
+GRANT ALL ON TABLE public.schema_migrations TO luricidex;
+
+
+--
+-- Name: TABLE servers; Type: ACL; Schema: public; Owner: Web
+--
+
+REVOKE ALL ON TABLE public.servers FROM PUBLIC;
+REVOKE ALL ON TABLE public.servers FROM "Web";
+GRANT ALL ON TABLE public.servers TO "Web";
+GRANT ALL ON TABLE public.servers TO luricidex;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
